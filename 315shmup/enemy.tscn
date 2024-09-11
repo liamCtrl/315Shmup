@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://ibmpyqfdlyc8"]
+
+[ext_resource type="Script" path="res://enemy.gd" id="1_j5ruo"]
+[ext_resource type="Texture2D" uid="uid://bbd0tdm0x5f80" path="res://enemyRed4.png" id="2_yogm2"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2n6hy"]
+size = Vector2(22.3717, 44.374)
+
+[node name="enemy" type="RigidBody2D"]
+position = Vector2(0, -404)
+gravity_scale = 0.0
+contact_monitor = true
+max_contacts_reported = 1
+script = ExtResource("1_j5ruo")
+
+[node name="enemySprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_yogm2")
+
+[node name="enemyCollisionShape" type="CollisionShape2D" parent="."]
+position = Vector2(-1.36121, -1)
+scale = Vector2(3.96584, 1.893)
+shape = SubResource("RectangleShape2D_2n6hy")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
