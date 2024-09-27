@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://bixf7blidj8x5"]
+
+[ext_resource type="Script" path="res://bullet.gd" id="1_eb26v"]
+[ext_resource type="Texture2D" uid="uid://dhllbbqdyi13t" path="res://laserBlue02.png" id="2_fyuyl"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xs3oo"]
+size = Vector2(18, 40)
+
+[node name="bullet" type="RigidBody2D"]
+position = Vector2(0, -60)
+gravity_scale = 0.0
+contact_monitor = true
+max_contacts_reported = 1
+linear_velocity = Vector2(0, -60)
+script = ExtResource("1_eb26v")
+
+[node name="bulletSprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_fyuyl")
+
+[node name="bulletCollision" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_xs3oo")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

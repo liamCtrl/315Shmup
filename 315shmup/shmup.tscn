@@ -1,10 +1,11 @@
 [gd_scene load_steps=9 format=3 uid="uid://bha7e6rwp4knk"]
 
 [ext_resource type="Texture2D" uid="uid://kao7sqtki6w2" path="res://playerShip1_blue.png" id="1_l2unu"]
+[ext_resource type="Script" path="res://game controller.gd" id="1_p4hmh"]
 [ext_resource type="Script" path="res://player.gd" id="1_ws2by"]
+[ext_resource type="PackedScene" uid="uid://bixf7blidj8x5" path="res://bullet.tscn" id="2_11hij"]
 [ext_resource type="PackedScene" uid="uid://ibmpyqfdlyc8" path="res://enemy.tscn" id="3_76kcq"]
-[ext_resource type="Script" path="res://bullet.gd" id="4_xqgae"]
-[ext_resource type="Texture2D" uid="uid://dhllbbqdyi13t" path="res://laserBlue02.png" id="5_4x1vo"]
+[ext_resource type="Script" path="res://enemy_spawner.gd" id="5_e3nyc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qa1kt"]
 size = Vector2(30, 79)
@@ -12,14 +13,13 @@ size = Vector2(30, 79)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_86xvc"]
 size = Vector2(103, 35)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_xs3oo"]
-size = Vector2(18, 40)
-
 [node name="Node2D" type="Node2D"]
 position = Vector2(577, 521)
+script = ExtResource("1_p4hmh")
 
 [node name="player" type="CharacterBody2D" parent="."]
 script = ExtResource("1_ws2by")
+bullet_resource = ExtResource("2_11hij")
 
 [node name="playerSprite" type="Sprite2D" parent="player"]
 texture = ExtResource("1_l2unu")
@@ -34,13 +34,23 @@ shape = SubResource("RectangleShape2D_86xvc")
 
 [node name="enemy" parent="." instance=ExtResource("3_76kcq")]
 
-[node name="bullet" type="RigidBody2D" parent="."]
-position = Vector2(0, -83)
-gravity_scale = 0.0
-script = ExtResource("4_xqgae")
+[node name="bullet" parent="." instance=ExtResource("2_11hij")]
 
-[node name="bulletSprite" type="Sprite2D" parent="bullet"]
-texture = ExtResource("5_4x1vo")
+[node name="enemy spawner" type="Node2D" parent="."]
+position = Vector2(0, -404)
+script = ExtResource("5_e3nyc")
+enemy_resource = ExtResource("3_76kcq")
 
-[node name="bulletCollision" type="CollisionShape2D" parent="bullet"]
-shape = SubResource("RectangleShape2D_xs3oo")
+[node name="Timer" type="Timer" parent="enemy spawner"]
+wait_time = 2.0
+autostart = true
+
+[node name="Label" type="Label" parent="."]
+offset_left = -547.0
+offset_top = -498.0
+offset_right = -507.0
+offset_bottom = -475.0
+scale = Vector2(3.75085, 2.44104)
+text = "0"
+
+[connection signal="timeout" from="enemy spawner/Timer" to="enemy spawner" method="_on_timer_timeout"]
